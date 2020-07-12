@@ -172,7 +172,10 @@ public class VentaActivity extends AppCompatActivity {
     }
 
     public void verVenta (View v) {
-        Toast.makeText(this, "Viendo Venta", Toast.LENGTH_LONG).show();
+        String placa = jetPlaca.getText().toString();
+        Intent IntInfoVenta = new Intent(this,InfoVentaActivity.class);
+        IntInfoVenta.putExtra("Placa", placa);
+        startActivity(IntInfoVenta);
     }
 
     public void cancelar (View v) {
