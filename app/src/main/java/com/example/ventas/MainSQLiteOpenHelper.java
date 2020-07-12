@@ -15,8 +15,8 @@ public class MainSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE cliente (user text PRIMARY KEY, name text, password text, city text)");
-        db.execSQL("CREATE TABLE auto (placa text PRIMARY KEY, modelo text, marca text, valor text)");
-        db.execSQL("CREATE TABLE venta (placa text PRIMARY KEY, user text, modelo text, marca text, color text, valor text)");
+        db.execSQL("CREATE TABLE auto (placa text PRIMARY KEY, modelo text, marca text, valor text, status text)");
+        db.execSQL("CREATE TABLE venta (placa text PRIMARY KEY, user text, modelo text, marca text, color text, valor text, status text)");
     }
 
     @Override

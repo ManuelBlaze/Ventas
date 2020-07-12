@@ -2,6 +2,7 @@ package com.example.ventas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,8 +16,8 @@ import android.widget.Toast;
 public class VentaActivity extends AppCompatActivity {
 
     EditText jetPlaca, jetColor;
-    TextView jtvUsuario, jtvModelo, jtvMarca, jtvValor;
-    Button jbtComprar, jbtBuscar;
+    TextView jtvUsuario, jtvModelo, jtvMarca, jtvValor, jtvStatus;
+    Button jbtComprar, jbtBuscar, jbtVerVenta;
     MainSQLiteOpenHelper Admin = new MainSQLiteOpenHelper(this, "empresa.db", null, 1);
 
     @Override
@@ -37,9 +38,11 @@ public class VentaActivity extends AppCompatActivity {
         jtvMarca = findViewById(R.id.tvMarca);
         jetColor = findViewById(R.id.etColor);
         jtvValor = findViewById(R.id.tvValor);
+        jtvStatus = findViewById(R.id.tvStatus);
 
         jbtBuscar = findViewById(R.id.btBuscar);
         jbtComprar = findViewById(R.id.btComprar);
+        jbtVerVenta = findViewById(R.id.btVerVenta);
     }
 
     public void buscar (View v) {
@@ -56,10 +59,19 @@ public class VentaActivity extends AppCompatActivity {
                 jtvModelo.setText(aut.getString(1));
                 jtvMarca.setText(aut.getString(2));
                 jtvValor.setText(aut.getString(3));
+                jtvStatus.setText(aut.getString(4));
 
-                jbtBuscar.setVisibility(View.GONE);
-                jbtComprar.setVisibility(View.VISIBLE);
-                jetColor.requestFocus();
+                String status = jtvStatus.getText().toString();
+                if (status.equals("Disponible")) {
+                    jbtBuscar.setVisibility(View.GONE);
+                    jbtComprar.setVisibility(View.VISIBLE);
+                    jetColor.requestFocus();
+                } else {
+                    subConsul(placa);
+                    jbtBuscar.setVisibility(View.GONE);
+                    jbtVerVenta.setVisibility(View.VISIBLE);
+                }
+
             } else {
                 Toast.makeText(this, "Placa NO Encontrada", Toast.LENGTH_LONG).show();
                 jetPlaca.requestFocus();
@@ -71,7 +83,7 @@ public class VentaActivity extends AppCompatActivity {
 
     public void comprar (View v) {
         SQLiteDatabase db = Admin.getReadableDatabase();
-        String user, placa, modelo, marca, color, valor;
+        String user, placa, modelo, marca, color, valor, status;
         user = jtvUsuario.getText().toString();
         placa = jetPlaca.getText().toString();
         modelo = jtvModelo.getText().toString();
@@ -79,21 +91,88 @@ public class VentaActivity extends AppCompatActivity {
         color = jetColor.getText().toString();
         valor = jtvValor.getText().toString();
 
+
         if (placa.isEmpty() || color.isEmpty() ) {
             Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_LONG).show();
             jetColor.requestFocus();
         } else {
+            status = "Vendido";
+            ContentValues dato = new ContentValues();
+            dato.put("placa", placa);
+            dato.put("user", user);
+            dato.put("modelo", modelo);
+            dato.put("marca", marca);
+            dato.put("color", color);
+            dato.put("valor", valor);
+            dato.put("status", status);
 
-            Toast.makeText(this, "Compra realizada Exitosamente", Toast.LENGTH_LONG).show();
-            limpiarCampos();
+            ContentValues auto = new ContentValues();
+            dato.put("placa", placa);
+            dato.put("modelo", modelo);
+            dato.put("marca", marca);
+            dato.put("valor", valor);
+            dato.put("status", status);
+
+            long respuesta = db.insert("venta", null, dato);
+            if (respuesta > 0) {
+                long res = actualizar();
+
+                if (res > 0) {
+                    Toast.makeText(this, "Compra realizada Exitosamente", Toast.LENGTH_LONG).show();
+                    limpiarCampos();
+                } else {
+                    Toast.makeText(this, "Ha Ocurrido un Error al Actualizar", Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+                Toast.makeText(this, "Ha Ocurrido un Error", Toast.LENGTH_LONG).show();
+                jetPlaca.requestFocus();
+            }
         }
         db.close();
     }
 
+    public void subConsul (String placa) {
+        SQLiteDatabase db = Admin.getReadableDatabase();
+        Cursor col = db.rawQuery("SELECT * FROM venta WHERE placa = '"+placa +"'", null);
+        if (col.moveToFirst()) {
+            jetColor.setText(col.getString(4));
+        }
+        db.close();
+    }
+
+    public long actualizar () {
+        SQLiteDatabase db = Admin.getWritableDatabase();
+        String placa = jetPlaca.getText().toString();
+        String modelo = jtvModelo.getText().toString();
+        String marca = jtvMarca.getText().toString();
+        String valor = jtvValor.getText().toString();
+        String status = "Vendido";
+
+        ContentValues dato = new ContentValues();
+        dato.put("placa", placa);
+        dato.put("modelo", modelo);
+        dato.put("marca", marca);
+        dato.put("valor", valor);
+        dato.put("status", status);
+
+        long res = db.update("auto", dato, "placa = '"+ placa + "'", null);
+
+        if (res > 0) {
+            return res;
+        } else {
+            res = 0;
+        }
+        db.close();
+        return res;
+    }
+
+    public void verVenta (View v) {
+        Toast.makeText(this, "Viendo Venta", Toast.LENGTH_LONG).show();
+    }
+
     public void cancelar (View v) {
         limpiarCampos();
-        jbtComprar.setVisibility(View.GONE);
-        jbtBuscar.setVisibility(View.VISIBLE);
     }
 
     public void limpiarCampos () {
@@ -102,7 +181,11 @@ public class VentaActivity extends AppCompatActivity {
         jtvMarca.setText("Marca del Auto");
         jetColor.setText("");
         jtvValor.setText("Ej: 6500000");
+        jtvStatus.setText("----------");
 
+        jbtComprar.setVisibility(View.GONE);
+        jbtVerVenta.setVisibility(View.GONE);
+        jbtBuscar.setVisibility(View.VISIBLE);
         jetPlaca.findFocus();
     }
 

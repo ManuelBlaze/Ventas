@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AutoActivity extends AppCompatActivity {
     EditText jetPlaca, jetModelo, jetMarca, jetValor;
     Button jbtConsultar, jbtAgregar, jbtModificar, jbtEliminar, jbtCancelar;
+    TextView jtvStatus;
     char div = '-';
     MainSQLiteOpenHelper Admin = new MainSQLiteOpenHelper(this, "empresa.db", null, 1);
 
@@ -35,6 +37,8 @@ public class AutoActivity extends AppCompatActivity {
         jbtModificar = findViewById(R.id.btModificar);
         jbtEliminar = findViewById(R.id.btEliminar);
         jbtCancelar = findViewById(R.id.btCancelar);
+
+        jtvStatus = findViewById(R.id.tvStatus);
     }
 
     public  void agregar (View v){
@@ -44,6 +48,7 @@ public class AutoActivity extends AppCompatActivity {
         String modelo = jetModelo.getText().toString();
         String marca = jetMarca.getText().toString();
         String valor = jetValor.getText().toString();
+        String status = "Disponible";
 
         if(placa.isEmpty() || modelo.isEmpty() || marca.isEmpty() || valor.isEmpty()) {
             Toast.makeText(this, "Todos los Campos son Requeridos", Toast.LENGTH_LONG).show();
@@ -55,6 +60,8 @@ public class AutoActivity extends AppCompatActivity {
             dato.put("modelo", modelo);
             dato.put("marca", marca);
             dato.put("valor", valor);
+            dato.put("status", status);
+
             long respuesta = db.insert("auto", null, dato);
             if(respuesta > 0){
                 Toast.makeText(this, "Auto Agregado Exitosamente", Toast.LENGTH_LONG).show();
@@ -78,11 +85,10 @@ public class AutoActivity extends AppCompatActivity {
         } else {
             Cursor fila  = db.rawQuery("SELECT * FROM auto WHERE placa='" + placa + "'", null );
             if(fila.moveToFirst()){
-
                 jetModelo.setText(fila.getString(1));
                 jetMarca.setText(fila.getString(2));
                 jetValor.setText(fila.getString(3));
-
+                jtvStatus.setText(fila.getString(4));
             } else {
                 Toast.makeText(this, "Auto no Registrado ", Toast.LENGTH_LONG).show();
             }
@@ -97,6 +103,7 @@ public class AutoActivity extends AppCompatActivity {
         String modelo = jetModelo.getText().toString();
         String marca = jetMarca.getText().toString();
         String valor = jetValor.getText().toString();
+        String status = jtvStatus.getText().toString();
 
         if(placa.isEmpty() || modelo.isEmpty() || marca.isEmpty() || valor.isEmpty()) {
             Toast.makeText(this, "Todos los Campos son Requeridos", Toast.LENGTH_LONG).show();
@@ -106,6 +113,7 @@ public class AutoActivity extends AppCompatActivity {
             dato.put("modelo", modelo);
             dato.put("marca", marca);
             dato.put("valor", valor);
+            dato.put("status", status);
 
             long respuesta = db.update("auto", dato, "placa = '"+ placa + "'", null);
 
@@ -142,6 +150,7 @@ public class AutoActivity extends AppCompatActivity {
         jetModelo.setText("");
         jetMarca.setText("");
         jetValor.setText("");
+        jtvStatus.setText("----------");
 
         jetPlaca.requestFocus();
     }
