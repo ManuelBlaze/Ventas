@@ -23,6 +23,8 @@ public class AutoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto);
 
+        this.setTitle("Control De Autos");
+
         jetPlaca = findViewById(R.id.etPlaca);
         jetModelo = findViewById(R.id.etModelo);
         jetMarca = findViewById(R.id.etMarca);
@@ -84,6 +86,7 @@ public class AutoActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Auto no Registrado ", Toast.LENGTH_LONG).show();
             }
+            fila.close();
         }
         db.close();
     }

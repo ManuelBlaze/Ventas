@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.setTitle("Venta de Autos | Inicio");
+
         jetUser = findViewById(R.id.etUser);
         jetPassword = findViewById(R.id.etPassword);
         jbtLogin = findViewById(R.id.btLogin);
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Usuario o Contraseña Incorrectos", Toast.LENGTH_LONG).show();
             }
+            fila.close();
         }
         db.close();
     }

@@ -24,6 +24,8 @@ public class VentaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venta);
 
+        this.setTitle("Realizar Venta");
+
         Intent IntVenta = getIntent();
         String user = IntVenta.getStringExtra("User");
 
@@ -62,6 +64,7 @@ public class VentaActivity extends AppCompatActivity {
                 Toast.makeText(this, "Placa NO Encontrada", Toast.LENGTH_LONG).show();
                 jetPlaca.requestFocus();
             }
+            aut.close();
         }
         db.close();
     }

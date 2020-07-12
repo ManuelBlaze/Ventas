@@ -23,6 +23,8 @@ public class ClientesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientes);
 
+        this.setTitle("Control De Clientes");
+
         jetName = findViewById(R.id.etNombre);
         jetUser = findViewById(R.id.etUsuario);
         jetPass1 = findViewById(R.id.etPassword1);
@@ -64,6 +66,7 @@ public class ClientesActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Usuario No Registrado", Toast.LENGTH_LONG).show();
             }
+            fila.close();
         }
         db.close();
     }
