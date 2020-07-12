@@ -172,6 +172,16 @@
             android:text="Color"
             android:textSize="25dp" />
 
+        <TextView
+            android:id="@+id/tvColor"
+            android:layout_width="170dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Marca del Auto"
+            android:visibility="gone"
+            android:textSize="18dp" />
+
         <EditText
             android:id="@+id/etColor"
             android:layout_width="170dp"
@@ -180,6 +190,7 @@
             android:ems="10"
             android:gravity="center"
             android:hint="Color del Auto"
+            android:visibility="visible"
             android:inputType="textPersonName" />
     </LinearLayout>
 

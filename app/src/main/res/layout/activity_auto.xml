@@ -63,6 +63,17 @@
             android:text="Modelo"
             android:textSize="25dp" />
 
+        <TextView
+            android:id="@+id/tvModelo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="----------"/>
+
         <EditText
             android:id="@+id/etModelo"
             android:layout_width="wrap_content"
@@ -71,6 +82,7 @@
             android:ems="10"
             android:gravity="center"
             android:hint="Modelo del Auto"
+            android:visibility="visible"
             android:inputType="textPersonName" />
 
     </LinearLayout>
@@ -96,6 +108,17 @@
             android:gravity="center"
             android:text="Marca"
             android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tvMarca"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="----------"/>
 
         <EditText
             android:id="@+id/etMarca"
@@ -131,6 +154,17 @@
             android:gravity="center"
             android:text="Valor"
             android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/tvValor"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="----------"/>
 
         <EditText
             android:id="@+id/etValor"
@@ -209,20 +243,22 @@
             android:layout_marginLeft="5dp"
             android:backgroundTint="#6CC070"
             android:text="Agregar"
+            android:visibility="visible"
             android:onClick="agregar"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout18"
+        android:id="@+id/lyBotones"
         android:layout_width="409dp"
         android:layout_height="70dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="1dp"
         android:gravity="center"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -235,16 +271,18 @@
             android:layout_marginRight="5dp"
             android:backgroundTint="#edf2f6"
             android:onClick="modificar"
-            android:text="Modificar" />
+            android:text="Modificar"
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/btEliminar"
             android:layout_width="190dp"
             android:layout_height="58dp"
             android:backgroundTint="#AA0000"
-            android:text="Eliminar"
             android:onClick="eliminar"
-            android:textColor="#FFFFFF" />
+            android:text="Eliminar"
+            android:textColor="#FFFFFF"
+            android:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout
@@ -254,13 +292,11 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="114dp"
         android:gravity="bottom|end"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout18">
+        app:layout_constraintTop_toBottomOf="@+id/lyBotones">
 
         <Button
             android:id="@+id/btCancelar"

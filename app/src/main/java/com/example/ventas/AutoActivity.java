@@ -10,13 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class AutoActivity extends AppCompatActivity {
     EditText jetPlaca, jetModelo, jetMarca, jetValor;
     Button jbtConsultar, jbtAgregar, jbtModificar, jbtEliminar, jbtCancelar;
-    TextView jtvStatus;
+    TextView jtvStatus, jtvModelo, jtvMarca, jtvValor;
+    LinearLayout botones;
     char div = '-';
     MainSQLiteOpenHelper Admin = new MainSQLiteOpenHelper(this, "empresa.db", null, 1);
 
@@ -38,7 +40,12 @@ public class AutoActivity extends AppCompatActivity {
         jbtEliminar = findViewById(R.id.btEliminar);
         jbtCancelar = findViewById(R.id.btCancelar);
 
+        jtvModelo = findViewById(R.id.tvModelo);
+        jtvMarca = findViewById(R.id.tvMarca);
+        jtvValor = findViewById(R.id.tvValor);
         jtvStatus = findViewById(R.id.tvStatus);
+
+        botones = findViewById(R.id.lyBotones);
     }
 
     public  void agregar (View v){
@@ -85,10 +92,38 @@ public class AutoActivity extends AppCompatActivity {
         } else {
             Cursor fila  = db.rawQuery("SELECT * FROM auto WHERE placa='" + placa + "'", null );
             if(fila.moveToFirst()){
-                jetModelo.setText(fila.getString(1));
-                jetMarca.setText(fila.getString(2));
-                jetValor.setText(fila.getString(3));
                 jtvStatus.setText(fila.getString(4));
+                String status = jtvStatus.getText().toString();
+
+                if (status.equals("Disponible")) {
+                    jtvModelo.setVisibility(View.GONE);
+                    jetModelo.setVisibility(View.VISIBLE);
+                    jtvMarca.setVisibility(View.GONE);
+                    jetMarca.setVisibility(View.VISIBLE);
+                    jtvValor.setVisibility(View.GONE);
+                    jetValor.setVisibility(View.VISIBLE);
+
+                    jbtAgregar.setVisibility(View.VISIBLE);
+                    botones.setVisibility(View.VISIBLE);
+
+                    jetModelo.setText(fila.getString(1));
+                    jetMarca.setText(fila.getString(2));
+                    jetValor.setText(fila.getString(3));
+                } else {
+                    jetModelo.setVisibility(View.GONE);
+                    jtvModelo.setVisibility(View.VISIBLE);
+                    jetMarca.setVisibility(View.GONE);
+                    jtvMarca.setVisibility(View.VISIBLE);
+                    jetValor.setVisibility(View.GONE);
+                    jtvValor.setVisibility(View.VISIBLE);
+
+                    jbtAgregar.setVisibility(View.GONE);
+                    botones.setVisibility(View.GONE);
+
+                    jtvModelo.setText(fila.getString(1));
+                    jtvMarca.setText(fila.getString(2));
+                    jtvValor.setText(fila.getString(3));
+                }
             } else {
                 Toast.makeText(this, "Auto no Registrado ", Toast.LENGTH_LONG).show();
             }
@@ -151,6 +186,19 @@ public class AutoActivity extends AppCompatActivity {
         jetMarca.setText("");
         jetValor.setText("");
         jtvStatus.setText("----------");
+        jtvMarca.setText("");
+        jtvModelo.setText("");
+        jtvValor.setText("");
+
+        jtvModelo.setVisibility(View.GONE);
+        jetModelo.setVisibility(View.VISIBLE);
+        jtvMarca.setVisibility(View.GONE);
+        jetMarca.setVisibility(View.VISIBLE);
+        jtvValor.setVisibility(View.GONE);
+        jetValor.setVisibility(View.VISIBLE);
+
+        jbtAgregar.setVisibility(View.VISIBLE);
+        botones.setVisibility(View.VISIBLE);
 
         jetPlaca.requestFocus();
     }

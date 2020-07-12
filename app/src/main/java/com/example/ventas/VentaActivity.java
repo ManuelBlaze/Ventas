@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class VentaActivity extends AppCompatActivity {
 
     EditText jetPlaca, jetColor;
-    TextView jtvUsuario, jtvModelo, jtvMarca, jtvValor, jtvStatus;
+    TextView jtvUsuario, jtvModelo, jtvMarca, jtvValor, jtvStatus, jtvColor;
     Button jbtComprar, jbtBuscar, jbtVerVenta;
     MainSQLiteOpenHelper Admin = new MainSQLiteOpenHelper(this, "empresa.db", null, 1);
 
@@ -37,6 +37,7 @@ public class VentaActivity extends AppCompatActivity {
         jtvModelo = findViewById(R.id.tvModelo);
         jtvMarca = findViewById(R.id.tvMarca);
         jetColor = findViewById(R.id.etColor);
+        jtvColor = findViewById(R.id.tvColor);
         jtvValor = findViewById(R.id.tvValor);
         jtvStatus = findViewById(R.id.tvStatus);
 
@@ -136,7 +137,10 @@ public class VentaActivity extends AppCompatActivity {
         SQLiteDatabase db = Admin.getReadableDatabase();
         Cursor col = db.rawQuery("SELECT * FROM venta WHERE placa = '"+placa +"'", null);
         if (col.moveToFirst()) {
-            jetColor.setText(col.getString(4));
+            jtvColor.setText(col.getString(4));
+
+            jetColor.setVisibility(View.GONE);
+            jtvColor.setVisibility(View.VISIBLE);
         }
         db.close();
     }
@@ -180,6 +184,9 @@ public class VentaActivity extends AppCompatActivity {
         jtvModelo.setText("Modelo del Auto");
         jtvMarca.setText("Marca del Auto");
         jetColor.setText("");
+        jtvColor.setText("");
+        jtvColor.setVisibility(View.GONE);
+        jetColor.setVisibility(View.VISIBLE);
         jtvValor.setText("Ej: 6500000");
         jtvStatus.setText("----------");
 
